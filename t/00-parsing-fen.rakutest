@@ -1,14 +1,27 @@
 use lib 'lib';
 use Test;
 use FEN::Grammar;
+use FEN::Actions;
+use FEN::Utils;
 
-plan 2;
+plan 5;
 
 use-ok "FEN::Grammar";
+use-ok "FEN::Actions";
+use-ok "FEN::Utils";
 
 
 my $fen = 'r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1';
-my $match = FEN::Grammar.parse($fen);
-ok $match, "Succesfully parsed FEN";
+my $actions = FEN::Actions.new;
+my $match = FEN::Grammar.parse($fen, actions => $actions);
+ok $match, "Successfully parsed FEN";
+
+my @ranks = $match.made;
+ok @ranks, "Successfully created ranks list";
+
+say "\nMatrix print \n";
+FEN::Utils::to-matrix(@ranks).map: *.say;
+say "\nUnicoded matrix print \n";
+FEN::Utils::to-unicoded-matrix(@ranks).map: *.say;
 
 done-testing;
