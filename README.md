@@ -3,7 +3,8 @@
 ### Parsing FEN
 ```
 use FEN::Grammar;
-my $match = FEN::Grammar.parse('r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1');
+my $fen = 'r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1';
+my $match = FEN::Grammar.parse($fen);
 ```
 ### Using FEN::Actions
 We can create an array of ranks describing the position.
@@ -14,7 +15,6 @@ use FEN::Actions;
 my $actions = FEN::Actions.new;
 my $match = FEN::Grammar.parse($fen, actions => $actions);
 my @ranks = $match.made; # Array of ranks
-
 ```
 
 ### Transform to matrix
@@ -26,7 +26,7 @@ use FEN::Utils;
 my @matrix = FEN::Utils::to-matrix(@ranks);
 
 # display 
-@matrix.map: *.say;
+sink @matrix.map: *.say;
 
 [r . b k . . . r]
 [p . . p B p N p]
@@ -43,7 +43,7 @@ use FEN::Utils;
 my @matrix = FEN::Utils::to-unicoded-matrix(@ranks);
 
 # display 
-@matrix.map: *.say;
+sink @matrix.map: *.say;
 
 [♜ . ♝ ♚ . . . ♜]
 [♟ . . ♟ ♗ ♟ ♘ ♟]
