@@ -16,12 +16,14 @@ my $actions = FEN::Actions.new;
 my $match = FEN::Grammar.parse($fen, actions => $actions);
 ok $match, "Successfully parsed FEN";
 
-my @ranks = $match.made;
-ok @ranks, "Successfully created ranks list";
+my $result = $match.made;
+ok $result.ranks, "Successfully created ranks list";
 
 say "\nMatrix print \n";
-FEN::Utils::to-matrix(@ranks).map: *.say;
+FEN::Utils::to-matrix($result.ranks).map: *.say;
 say "\nUnicoded matrix print \n";
-FEN::Utils::to-unicoded-matrix(@ranks).map: *.say;
+FEN::Utils::to-unicoded-matrix($result.ranks).map: *.say;
+
+$result.show-state;
 
 done-testing;

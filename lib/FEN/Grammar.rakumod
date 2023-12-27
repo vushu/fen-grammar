@@ -68,24 +68,25 @@ grammar FEN::Grammar {
     }
 
     token active-color {
-        | <white-turn>
-        | <black-turn>
+        | <white>
+        | <black>
     }
 
-    token black-turn {
+    token black {
         'b'
     }
 
-    token white-turn {
+    token white {
         'w'
     }
 
     token castling {
-        <white-castling><black-castling>
+        | <unset>
+        | <white-castling><black-castling>
     }
 
     token white-castling {
-        <white-castling-queenside>?<white-castling-kingside>?
+        <white-castling-kingside>?<white-castling-queenside>?
     }
 
     token white-castling-queenside {
@@ -97,7 +98,7 @@ grammar FEN::Grammar {
     }
 
     token black-castling {
-        <black-castling-queenside>?<black-castling-kingside>?
+        <black-castling-kingside>?<black-castling-queenside>?
     }
 
     token black-castling-queenside {
@@ -115,11 +116,11 @@ grammar FEN::Grammar {
     }
 
     token black-en-passant-pos {
-        <letter> '5'
+        <letter>'6'
     }
 
     token white-en-passant-pos {
-        <letter> '4'
+        <letter>'3'
     }
 
     token unset {
@@ -131,10 +132,10 @@ grammar FEN::Grammar {
     }
 
     token halfmove-clock {
-        \d+
+        \d\d?
     }
 
     token fullmove-number {
-        \d+
+        \d\d?
     }
 }
