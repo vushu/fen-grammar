@@ -25,6 +25,7 @@ class FEN::State {
 class FEN::Result {
     has @.ranks is rw;
     has FEN::State $.state is rw;
+    has %.position-set is rw;
     method show-state {
         return say "No state was parsed!" if !$.state;
         say $.state.state-text;

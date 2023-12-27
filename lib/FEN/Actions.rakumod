@@ -1,13 +1,36 @@
 use FEN::Result;
 unit class FEN::Actions;
+
+method init-position-set {
+    my %position-set;
+    for 'a'..'h' -> $letter {
+        for 8 ... 1 -> $number {
+            my $position = ($letter, $number);
+            %position-set{$position} = '';
+        }
+    }
+    return %position-set;
+}
+
 method TOP($/) {
     make $<FEN>.made;
 }
 
 method FEN($/) {
+    my %position-set = self.init-position-set;
+    my @letters = 'a'..'h';
+    my @ranks-numbers = 8...1;
     my $result = FEN::Result.new;
-    $result.ranks = $<rank>.map: *.made;
+    for $<rank>.kv -> $idx, $rank {
+        my @made-rank = $rank.made;
+        for @made-rank -> $pos {
+            my $key = (@letters[$pos[0]], @ranks-numbers[$idx]);
+            %position-set{$key}= $pos[1];
+        }
+        $result.ranks.push(@made-rank);
+    }
     $result.state = $<state>.made if $<state>;
+    $result.position-set = %position-set;
     make $result;
 }
 

@@ -24,6 +24,11 @@ FEN::Utils::to-matrix($result.ranks).map: *.say;
 say "\nUnicoded matrix print \n";
 FEN::Utils::to-unicoded-matrix($result.ranks).map: *.say;
 
+say "\n----------------------------------\n";
 $result.show-state;
+say "----------------------------------";
+
+say "\nPosition set:\n";
+say $result.position-set;
 
 done-testing;
