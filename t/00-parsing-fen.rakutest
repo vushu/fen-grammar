@@ -19,7 +19,7 @@ ok $match, "Successfully parsed FEN";
 my $result = $match.made;
 ok $result.ranks, "Successfully created ranks list";
 
-say "\nMatrix print \n";
+say "\nASCII Matrix print \n";
 FEN::Utils::to-matrix($result.ranks).map: *.say;
 say "\nUnicoded matrix print \n";
 FEN::Utils::to-unicoded-matrix($result.ranks).map: *.say;

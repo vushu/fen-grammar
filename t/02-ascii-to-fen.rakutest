@@ -1,0 +1,33 @@
+use lib 'lib';
+use Test;
+use FEN::Grammar;
+use FEN::Actions;
+use FEN::Utils;
+use FEN::Result;
+
+plan 2;
+
+my $ascii-matrix = q:to/ASCII/;
+[r . b k . . . r]
+[p . . p B p N p]
+[n . . . . n . .]
+[. p . N P . . P]
+[. . . . . . P .]
+[. . . P . . . .]
+[P . P . K . . .]
+[q . . . . . b .]
+ASCII
+
+my $fen = FEN::Utils::ascii-to-fen($ascii-matrix);
+say $fen;
+
+# Re-parsing it
+my $actions = FEN::Actions.new;
+my $match = FEN::Grammar.parse($fen, actions => $actions);
+ok $match, "Successfully parsed FEN";
+
+my $result = $match.made;
+ok $result.ranks, "Successfully created ranks list";
+
+say "\nASCII Matrix print \n";
+sink FEN::Utils::to-matrix($result.ranks).map: *.say;

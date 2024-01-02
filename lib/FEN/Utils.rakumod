@@ -27,3 +27,37 @@ our sub to-unicoded-matrix(@ranks) {
     }
     return @matrix;
 }
+
+our sub ascii-to-fen($ascii-matrix){
+    my @fen-string;
+    for $ascii-matrix.lines -> $line {
+        my $stripped-ws = $line.subst(:g, /\s+/,'');
+        die "Not valid ascii matrix" if $stripped-ws.chars ne 10;
+        my $rank-str = $stripped-ws.comb;
+        die "Invalid start or end character must be [ ] " if $rank-str[0] ne '[' && $rank-str[*-1] ne ']' ;
+        my $empty-space-counter = 0;
+        my $fen-rank-string = '';
+
+        for 1 .. 8 -> $idx {
+            my $char = $rank-str[$idx];
+            if $char eq '.' {
+                $empty-space-counter++;
+                $fen-rank-string ~= $empty-space-counter if $idx eq 8;
+
+            }
+            else {
+                if $empty-space-counter > 0 {
+                    $fen-rank-string ~= $empty-space-counter ~ $char;
+                }
+                else {
+                    $fen-rank-string ~= $char;
+                }
+                $empty-space-counter = 0;
+            }
+        }
+        @fen-string.push($fen-rank-string);
+
+    }
+    @fen-string.join('/');
+    
+}

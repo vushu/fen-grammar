@@ -25,7 +25,7 @@ my $match = FEN::Grammar.parse($fen, actions => $actions);
 my $result = $match.made; # returns a FEN::Result
 ```
 
-### Transform to matrix
+### Transform to ASCII matrix
 For easy usage or rendering we can use FEN::Utils.
 
 ```
@@ -61,6 +61,25 @@ sink @matrix.map: *.say;
 [. . . ♙ . . . .]
 [♙ . ♙ . ♔ . . .]
 [♛ . . . . . ♝ .]
+```
+
+### From ASCII matrix back to FEN
+```
+my $ascii-matrix = q:to/ASCII/;
+[r . b k . . . r]
+[p . . p B p N p]
+[n . . . . n . .]
+[. p . N P . . P]
+[. . . . . . P .]
+[. . . P . . . .]
+[P . P . K . . .]
+[q . . . . . b .]
+ASCII
+
+my $fen = FEN::Utils::ascii-to-fen($ascii-matrix);
+say $fen;
+
+r1bk3r/p2pBpNp/n4n2/1p1NP2P/6P1/3P4/P1P1K3/q5b1
 ```
 
 ### Display state
