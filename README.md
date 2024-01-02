@@ -1,5 +1,5 @@
 ## Forsyth–Edwards Notation (FEN) Grammar
-
+[![SparrowCI](https://ci.sparrowhub.io/project/git-vushu-fen-grammar/badge?foo=bar)](https://ci.sparrowhub.io)
 ### Parsing FEN
 ```
 use FEN::Grammar;
