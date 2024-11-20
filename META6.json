@@ -1,22 +1,15 @@
 {
-  "auth": "zef:vushu",
-  "build-depends": [
-  ],
-  "depends": [
-  ],
-  "description": "Grammar for Forsyth-Edwards Notation (FEN) used for describing positions of a chess game",
-  "license": "Artistic-2.0",
-  "name": "FEN::Grammar",
-  "provides": {
-    "FEN::Grammar": "lib/FEN/Grammar.rakumod",
-    "FEN::Actions": "lib/FEN/Actions.rakumod",
-    "FEN::Utils": "lib/FEN/Utils.rakumod",
-    "FEN::Result": "lib/FEN/Result.rakumod"
-  },
-  "resources": [
-  ],
-  "test-depends": [
-  ],
-  "version": "0.0.5",
-  "source-url": "https://github.com/vushu/fen-grammar.git"
+    "name": "FEN::Grammar",
+    "description": "Grammar for Forsyth-Edwards Notation (FEN) used for describing positions of a chess game",
+    "version": "0.0.6",
+    "auth": "zef:vushu",
+    "build-depends": [],
+    "provides": {
+        "FEN::Grammar": "lib/FEN/Grammar.rakumod",
+        "FEN::Actions": "lib/FEN/Actions.rakumod",
+        "FEN::Utils": "lib/FEN/Utils.rakumod",
+        "FEN::Result": "lib/FEN/Result.rakumod"
+    },
+    "license": "Artistic-2.0",
+    "source-url": "https://github.com/vushu/fen-grammar.git"
 }

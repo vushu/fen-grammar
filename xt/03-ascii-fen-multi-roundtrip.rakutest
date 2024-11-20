@@ -1,0 +1,42 @@
+use lib 'lib';
+use Test;
+use FEN::Grammar;
+use FEN::Actions;
+use FEN::Utils;
+use FEN::Result;
+
+plan *;
+
+my $n-boards = 1000;
+
+sub generate-random-chess-position(Numeric:D $density = 0.3) {
+    my @pieces = <K Q R B N P k q r b n p>;
+    my @empty = ('.') xx 32;
+    my @board = (rand ≤ $density ?? @pieces.pick !! '.') xx 64;
+    @board = @board.rotor(8);
+    my @rows = do for @board -> @row {
+        '[' ~ @row.join(' ') ~ ']';
+    }
+    return @rows.join("\n");
+}
+
+my @matrices = generate-random-chess-position( rand ) xx $n-boards;
+
+for @matrices -> $ascii-matrix {
+    my $fen = FEN::Utils::ascii-to-fen($ascii-matrix);
+
+    # Re-parsing it
+    my $actions = FEN::Actions.new;
+    my $match = FEN::Grammar.parse($fen, :$actions);
+    #ok $match, "Successfully parsed FEN";
+
+    my $result = $match.made;
+    #ok $result.ranks, "Successfully created ranks list";
+
+    is
+            FEN::Utils::to-matrix($result.ranks).join("\n").trim,
+            $ascii-matrix.subst(/ <[\[\]]> /, :g).trim,
+            'Roundtrip equivalence';
+}
+
+done-testing;
