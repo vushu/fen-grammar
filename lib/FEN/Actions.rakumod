@@ -39,11 +39,12 @@ method rank($/) {
     my @chess-pieces;
     for $<position>.kv -> $idx, $pos {
         if $pos<chess-piece> {
-            my $p = $offset > 0 ?? max(($offset + $idx - 1), 0) !! $idx;
+            my $p = $offset > 0 ?? max($offset, 0) !! $idx;
             @chess-pieces.push(($p, ~$pos<chess-piece>));
+            $offset++
         }
-        else { # else is empty-space 
-            $offset = +$pos;
+        else { # else is empty-space
+            $offset += +$pos;
         }
     }
     make @chess-pieces;
