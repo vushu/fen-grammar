@@ -1,15 +1,41 @@
 use FEN::Result;
 unit class FEN::Actions;
 
-method init-position-set {
-    my %position-set;
-    for 'a'..'h' -> $letter {
-        for 8 ... 1 -> $number {
-            my $position = ($letter, $number);
-            %position-set{$position} = '';
+has $!rows_n_cols;
+has @!letters;
+has %!position-set;
+
+method BUILD(:$rows_n_cols = 8) {
+    $!rows_n_cols = $rows_n_cols;
+    my @letters = 'a' .. 'z';
+
+    if $!rows_n_cols > 26 {
+        for @letters -> $c {
+            for 1 .. $!rows_n_cols -> $num {
+                @!letters.push($c);
+                my $position = ($c, $num);
+                %!position-set{$position} = '';
+            }
+        }
+
+        for 1 .. $!rows_n_cols -> $num {
+            for 'a' .. 'z' -> $c {
+                @!letters.push($c ~ $num);
+                my $position = ($c ~ $num, $num);
+                %!position-set{$position} = '';
+            }
+        }
+
+    }
+    else {
+        @!letters = @letters[0..($!rows_n_cols - 1)];
+        for @!letters -> $c {
+            for 1 .. $!rows_n_cols -> $num {
+                my $position = ($c, $num);
+                %!position-set{$position} = '';
+            }
         }
     }
-    return %position-set;
 }
 
 method TOP($/) {
@@ -17,20 +43,18 @@ method TOP($/) {
 }
 
 method FEN($/) {
-    my %position-set = self.init-position-set;
-    my @letters = 'a'..'h';
-    my @ranks-numbers = 8...1;
+    my @ranks-numbers = $!rows_n_cols...1;
     my $result = FEN::Result.new;
     for $<rank>.kv -> $idx, $rank {
         my @made-rank = $rank.made;
         for @made-rank -> $pos {
-            my $key = (@letters[$pos[0]], @ranks-numbers[$idx]);
-            %position-set{$key}= $pos[1];
+            my $key = (@!letters[$pos[0]], @ranks-numbers[$idx]);
+            %!position-set{$key}= $pos[1];
         }
         $result.ranks.push(@made-rank);
     }
     $result.state = $<state>.made if $<state>;
-    $result.position-set = %position-set;
+    $result.position-set = %!position-set;
     make $result;
 }
 
