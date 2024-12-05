@@ -6,6 +6,7 @@
     "build-depends": [],
     "provides": {
         "FEN::Grammar": "lib/FEN/Grammar.rakumod",
+        "GFEN::Grammar": "lib/GFEN/Grammar.rakumod",
         "FEN::Actions": "lib/FEN/Actions.rakumod",
         "FEN::Utils": "lib/FEN/Utils.rakumod",
         "FEN::Result": "lib/FEN/Result.rakumod"

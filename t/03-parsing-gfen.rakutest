@@ -1,0 +1,35 @@
+use lib 'lib';
+use Test;
+use GFEN::Grammar;
+use FEN::Actions;
+use FEN::Utils;
+
+plan 5;
+
+use-ok "GFEN::Grammar";
+use-ok "FEN::Actions";
+use-ok "FEN::Utils";
+
+
+my $rows_cols = 27;
+my $fen-like = '5/11/5/3k1/12R5K/16K/22r///p3p15p';
+my $actions = FEN::Actions.new(rows_n_cols => $rows_cols);
+my $match = GFEN::Grammar.parse($fen-like, actions => $actions);
+ok $match, "Successfully parsed GFEN";
+
+my $result = $match.made;
+ok $result.ranks, "Successfully created ranks list";
+
+say "\nASCII Matrix print \n";
+FEN::Utils::to-matrix($result.ranks, $rows_cols).map: *.say;
+say "\nUnicoded matrix print \n";
+FEN::Utils::to-unicoded-matrix($result.ranks, $rows_cols).map: *.say;
+
+say "\n----------------------------------\n";
+$result.show-state;
+say "----------------------------------";
+
+say "\nPosition set:\n";
+say $result.position-set;
+
+done-testing;
