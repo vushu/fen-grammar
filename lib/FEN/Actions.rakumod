@@ -1,24 +1,24 @@
 use FEN::Result;
 unit class FEN::Actions;
 
-has $!rows_n_cols;
+has $!dimension;
 has @!letters;
 has %!position-set;
 
-method BUILD(:$rows_n_cols = 8) {
-    $!rows_n_cols = $rows_n_cols;
+method BUILD(:$dimension = 8) {
+    $!dimension = $dimension;
     my @letters = 'a' .. 'z';
 
-    if $!rows_n_cols > 26 {
+    if $!dimension > 26 {
         for @letters -> $c {
-            for 1 .. $!rows_n_cols -> $num {
+            for 1 .. $!dimension -> $num {
                 @!letters.push($c);
                 my $position = ($c, $num);
                 %!position-set{$position} = '';
             }
         }
 
-        for 1 .. $!rows_n_cols -> $num {
+        for 1 .. $!dimension -> $num {
             for 'a' .. 'z' -> $c {
                 @!letters.push($c ~ $num);
                 my $position = ($c ~ $num, $num);
@@ -28,9 +28,9 @@ method BUILD(:$rows_n_cols = 8) {
 
     }
     else {
-        @!letters = @letters[0..($!rows_n_cols - 1)];
+        @!letters = @letters[0..($!dimension - 1)];
         for @!letters -> $c {
-            for 1 .. $!rows_n_cols -> $num {
+            for 1 .. $!dimension -> $num {
                 my $position = ($c, $num);
                 %!position-set{$position} = '';
             }
@@ -43,7 +43,7 @@ method TOP($/) {
 }
 
 method FEN($/) {
-    my @ranks-numbers = $!rows_n_cols...1;
+    my @ranks-numbers = $!dimension...1;
     my $result = FEN::Result.new;
     for $<rank>.kv -> $idx, $rank {
         my @made-rank = $rank.made;

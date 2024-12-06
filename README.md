@@ -104,20 +104,20 @@ say $result.position-set;
 ```
 
 ### Generalized FEN
-To parse a board of size NxN using GFEN::Grammar, as expected this doesn't support parsing state.
+To parse a board of size NxN use GFEN::Grammar.  
+Naturally this doesn't support parsing the state, since it's not traditional chess.
 
 ```
-my $rows_cols = 27;
+my $dimension = 27; # Dimension of a 27x27 board
 my $fen-like = '5/11/5/3k1/12R5K/16K/22r///p3p15p';
-my $actions = FEN::Actions.new(rows_n_cols => $rows_cols);
+
+# Remember to pass dimension of the board
+my $actions = FEN::Actions.new(dimension => $dimension);
 my $match = GFEN::Grammar.parse($fen-like, actions => $actions);
-ok $match, "Successfully parsed GFEN";
-
 my $result = $match.made;
-ok $result.ranks, "Successfully created ranks list";
 
-Print it using the Utils
-FEN::Utils::to-unicoded-matrix($result.ranks, $rows_cols).map: *.say;
+# Print it using the Utils
+FEN::Utils::to-unicoded-matrix($result.ranks, $dimension).map: *.say;
 ```
 outputs: 
 ```

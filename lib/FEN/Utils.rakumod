@@ -1,8 +1,8 @@
 unit module FEN::Utils;
 my %chess-pieces = :p('♟'), :P('♙'), :r('♜'), :R('♖'), :n('♞'), :N('♘'), :b('♝'), :B('♗'), :q('♛'), :Q('♕'), :k('♚'), :K('♔');
 
-our sub to-matrix(@ranks, $rows_cols = 8) {
-    my @matrix = [["." xx $rows_cols] xx $rows_cols];
+our sub to-matrix(@ranks, $dimension = 8) {
+    my @matrix = [["." xx $dimension] xx $dimension];
     for @ranks.kv -> $idx, $rank {
         for $rank -> @chess-pieces {
             for @chess-pieces -> $piece {
@@ -14,8 +14,8 @@ our sub to-matrix(@ranks, $rows_cols = 8) {
     return @matrix;
 }
 
-our sub to-unicoded-matrix(@ranks, $rows_cols = 8) {
-    my @matrix = [["." xx $rows_cols] xx $rows_cols];
+our sub to-unicoded-matrix(@ranks, $dimension = 8) {
+    my @matrix = [["." xx $dimension] xx $dimension];
     for @ranks.kv -> $idx, $rank {
         for $rank -> @chess-pieces {
             for @chess-pieces -> $piece {
@@ -28,7 +28,7 @@ our sub to-unicoded-matrix(@ranks, $rows_cols = 8) {
     return @matrix;
 }
 
-our sub ascii-to-fen($ascii-matrix, $rows_cols = 8){
+our sub ascii-to-fen($ascii-matrix, $dimension = 8){
     my @fen-string;
     for $ascii-matrix.lines -> $line {
         my $stripped-ws = $line.subst(:g, /\s+/,'');
@@ -38,11 +38,11 @@ our sub ascii-to-fen($ascii-matrix, $rows_cols = 8){
         my $empty-space-counter = 0;
         my $fen-rank-string = '';
 
-        for 1 .. $rows_cols -> $idx {
+        for 1 .. $dimension -> $idx {
             my $char = $rank-str[$idx];
             if $char eq '.' {
                 $empty-space-counter++;
-                $fen-rank-string ~= $empty-space-counter if $idx eq $rows_cols;
+                $fen-rank-string ~= $empty-space-counter if $idx eq $dimension;
 
             }
             else {
